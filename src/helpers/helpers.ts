@@ -2,6 +2,7 @@ import { Token } from 'src/models/token.entity';
 import { IDays } from 'src/types';
 
 export function generate8DigitToken(ammout: number): string {
+  if (ammout < 100) throw new Error('Ammount must be 100 or greater than 100');
   if (ammout % 100 !== 0) throw new Error('Ammount must be a multiple of 100');
 
   const d = calculateDaysPerAmmount(ammout);
@@ -31,18 +32,16 @@ export function isTokenValid(token: string): boolean {
 }
 
 export function tokenDaysHelper(token: Token): IDays {
-  if (!token) throw new Error('No token object found');
   if (!isTokenValid(token.token)) throw new Error('Token is not valid');
 
   const today = new Date();
   const boughtAt = token.createdAt;
   const totalDays = getDaysFromToken(token.token);
-  const expiryDate = new Date();
+  const expiryDate = boughtAt;
   expiryDate.setDate(boughtAt.getDate() + totalDays);
   const isDateExpired = today > expiryDate;
 
   const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-
   const remainingDays = isDateExpired
     ? 0
     : Math.round(Math.abs(((expiryDate as any) - (today as any)) / oneDay));

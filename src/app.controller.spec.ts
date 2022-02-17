@@ -40,7 +40,6 @@ describe('AppController', () => {
       };
 
       const result = (await appController.buyToken(buyToken)) as Token;
-      console.log(result);
       expect(result).not.toBeNull();
       expect(result.ammount).toBe(buyToken.ammount);
       expect(result.meterNumber).toBe(buyToken.meter);
@@ -55,7 +54,7 @@ describe('AppController', () => {
       };
 
       const result = (await appController.buyToken(buyToken)) as ResError;
-      console.log(result);
+
       expect(result).not.toBeNull();
       expect(result.message).toBe('Ammount must be a multiple of 100');
     });
@@ -80,8 +79,6 @@ describe('AppController', () => {
       const result = (await appController.getDaysFromToken(
         '123456789',
       )) as ResError;
-      console.log(result);
-      console.log(result);
       expect(result).not.toBeNull();
       expect(result.status).toBe(404);
       expect(result.message).toBe('Token not found');
