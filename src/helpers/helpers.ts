@@ -37,8 +37,8 @@ export function tokenDaysHelper(token: Token): IDays {
   const today = new Date();
   const boughtAt = token.createdAt;
   const totalDays = getDaysFromToken(token.token);
-  const expiryDate = boughtAt;
-  expiryDate.setDate(boughtAt.getDate() + totalDays);
+  const expiryDate = token.expiryAt ?? boughtAt;
+  if (!token.expiryAt) expiryDate.setDate(boughtAt.getDate() + totalDays);
   const isDateExpired = today > expiryDate;
 
   const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds

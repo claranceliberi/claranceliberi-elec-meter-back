@@ -30,12 +30,17 @@ export class AppService {
       const token = generate8DigitToken(dto.ammount);
 
       const date = new Date();
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + getDaysFromToken(token));
+
+      console.log(expiryDate);
 
       return this.tokenRepository.save({
         token,
         ammount: dto.ammount,
         meterNumber: dto.meter,
         createdAt: date,
+        expiryAt: expiryDate,
         active: true,
       });
     } catch (e) {

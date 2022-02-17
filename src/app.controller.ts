@@ -1,5 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Res,
+} from '@nestjs/common';
+import { Response } from 'express';
 import { AppService } from './app.service';
+import { ResError } from './helpers/Error';
 import { BuyElecDto } from './models/dto/buy-elect.dto';
 import { Token } from './models/token.entity';
 
@@ -30,9 +40,15 @@ export class AppController {
   }
 
   @Get('/load-token/:token')
-  loadToken(@Param('token') token: string) {
+  async loadToken(
+    @Param('token') token: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     try {
-      return this.appService.loadToken(token);
+      const result = await this.appService.loadToken(token);
+      if (result instanceof ResError && result.status === 404)
+        res.status(HttpStatus.NOT_FOUND);
+      return result;
     } catch (e) {
       return e.message();
     }

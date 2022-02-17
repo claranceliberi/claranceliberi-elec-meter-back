@@ -54,6 +54,7 @@ describe('helpers test', () => {
       ammount: 100,
       active: true,
       createdAt: new Date('2022-02-17T15:50:37.118Z'),
+      expiryAt: new Date('2022-02-11T15:50:37.118Z'),
     };
     const days = tokenDaysHelper(token);
 
@@ -69,6 +70,7 @@ describe('helpers test', () => {
       ammount: 100,
       active: true,
       createdAt: new Date('2020-02-17T15:50:37.118Z'),
+      expiryAt: new Date('2020-02-18T15:50:37.118Z'),
     };
     const days = tokenDaysHelper(token);
 
@@ -84,6 +86,7 @@ describe('helpers test', () => {
       ammount: 100,
       active: true,
       createdAt: new Date('2022-02-17T15:50:37.118Z'),
+      expiryAt: new Date('2022-02-18T15:50:37.118Z'),
     };
 
     expect(() => tokenDaysHelper(token)).toThrow('Token is not valid');
