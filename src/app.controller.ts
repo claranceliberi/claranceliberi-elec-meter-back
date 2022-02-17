@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { BuyElecDto } from './models/dto/buy-elect.dto';
 
@@ -15,7 +15,25 @@ export class AppController {
     try {
       return this.appService.buyElec(dto);
     } catch (e) {
-      return e.getMessage();
+      return e.message();
+    }
+  }
+
+  @Get('/get-days/:token')
+  getDaysFromToken(@Param('token') token: string) {
+    try {
+      return this.appService.getDays(token);
+    } catch (e) {
+      return e.message();
+    }
+  }
+
+  @Get('/load-token/:token')
+  loadToken(@Param('token') token: string) {
+    try {
+      return this.appService.loadToken(token);
+    } catch (e) {
+      return e.message();
     }
   }
 }

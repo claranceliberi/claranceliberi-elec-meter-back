@@ -30,11 +30,17 @@ export class AppService {
     });
   }
 
-  getDays(token: string) {
-    return getDaysFromToken(token);
+  async getDays(token: string) {
+    const _token = await this.tokenRepository.findOne({ token });
+    const days = { total: getDaysFromToken(token), remaining: 0 };
+    
+    
+    return days;
   }
 
-  isTokenValid(token: string) {
-    return getDaysFromToken(token);
+  async loadToken(token: string) {
+    const _token = await this.tokenRepository.findOne({ token });
+    console.log(_token);
+    return _token;
   }
 }

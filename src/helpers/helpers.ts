@@ -1,3 +1,5 @@
+import { Token } from 'src/models/token.entity';
+
 export function generate8DigitToken(ammout: number): string {
   if (ammout % 100 !== 0) throw new Error('Ammount must be a multiple of 100');
 
@@ -21,4 +23,28 @@ export function r() {
 export function getDaysFromToken(token: string): number {
   const parts = token.split('');
   return parseInt([parts[1], parts[3], parts[5], parts[7]].join(''));
+}
+
+export function isTokenValid(token: string): boolean {
+  return token.length === 8 && getDaysFromToken(token) > 0;
+}
+
+export function tokenDaysHelper(token: Token) {
+  if (!token) throw new Error('No token object found');
+  if (!isTokenValid(token.token)) throw new Error('Token is not valid');
+
+  const today = new Date();
+  const boughtAt = token.createdAt;
+  const totalDays = getDaysFromToken(token.token);
+  const expiryDate = new Date();
+  expiryDate.setDate(boughtAt.getDate() + totalDays);
+  const isDateExpired = today > expiryDate;
+
+  const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
+  const remainingDays = isDateExpired
+    ? 0
+    : Math.round(Math.abs(((expiryDate as any) - (today as any)) / oneDay));
+
+  return { boughtAt, expiryDate, isDateExpired, totalDays, remainingDays };
 }
