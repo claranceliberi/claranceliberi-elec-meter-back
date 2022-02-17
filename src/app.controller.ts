@@ -10,8 +10,12 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-  @Post()
+  @Post('/pay')
   buyToken(@Body() dto: BuyElecDto) {
-    return this.appService.buyElec(dto);
+    try {
+      return this.appService.buyElec(dto);
+    } catch (e) {
+      return e.getMessage();
+    }
   }
 }

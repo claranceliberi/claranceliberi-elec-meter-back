@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { generate8DigitToken, getDaysFromToken } from './helpers/helpers';
 import { BuyElecDto } from './models/dto/buy-elect.dto';
 import { Token } from './models/token.entity';
 
@@ -19,9 +20,11 @@ export class AppService {
     const token = generate8DigitToken(dto.ammount);
 
     const date = new Date();
+
     return this.tokenRepository.save({
       token,
-      meter: dto.ammount,
+      ammount: dto.ammount,
+      meterNumber: dto.meter,
       createdAt: date,
       active: true,
     });

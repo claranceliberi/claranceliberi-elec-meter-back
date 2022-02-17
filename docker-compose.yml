@@ -46,3 +46,4 @@ services:
 volumes:
   db-data:
   pgadmin-data:
+  elec-meter:

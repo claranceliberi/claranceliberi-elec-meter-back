@@ -4,13 +4,19 @@ import { join } from 'path';
 // entities: ['/src/modules/**/entities/*.entity.ts'],
 export const pgConfig: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: process.env.POSTGRES_HOST,
-  port: parseInt(<string>process.env.POSTGRES_PORT),
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DATABASE,
+  host: 'localhost',
+  port: 5432,
+  username: 'liberi',
+  password: 'liberi',
+  database: 'elecmeter',
   autoLoadEntities: true,
   synchronize: true,
   migrations: ['dist/src/db/migrations.js'],
   cli: { migrationsDir: 'src/db/migrations' },
 };
+
+// POSTGRES_HOST=postgres
+// POSTGRES_PORT=5432
+// POSTGRES_USER=liberi
+// POSTGRES_PASSWORD=liberi
+// POSTGRES_DATABASE=elec-meter
