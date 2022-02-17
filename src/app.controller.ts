@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { BuyElecDto } from './models/dto/buy-elect.dto';
+import { Token } from './models/token.entity';
 
 @Controller()
 export class AppController {
@@ -9,6 +10,10 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+  @Get('/all')
+  getAll(): Promise<Token[]> {
+    return this.appService.getAllTokens();
   }
   @Post('/pay')
   buyToken(@Body() dto: BuyElecDto) {
@@ -21,11 +26,7 @@ export class AppController {
 
   @Get('/get-days/:token')
   getDaysFromToken(@Param('token') token: string) {
-    try {
-      return this.appService.getDays(token);
-    } catch (e) {
-      return e.message();
-    }
+    return this.appService.getDays(token);
   }
 
   @Get('/load-token/:token')

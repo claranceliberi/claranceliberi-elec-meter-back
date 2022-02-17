@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ResError } from './helpers/Error';
 import {
   generate8DigitToken,
   getDaysFromToken,
@@ -20,29 +21,38 @@ export class AppService {
     return 'Hello World!';
   }
 
-  buyElec(dto: BuyElecDto): Promise<Token> {
-    const token = generate8DigitToken(dto.ammount);
+  getAllTokens(): Promise<Token[]> {
+    return this.tokenRepository.find();
+  }
 
-    const date = new Date();
+  buyElec(dto: BuyElecDto): Promise<Token | ResError> {
+    try {
+      const token = generate8DigitToken(dto.ammount);
 
-    return this.tokenRepository.save({
-      token,
-      ammount: dto.ammount,
-      meterNumber: dto.meter,
-      createdAt: date,
-      active: true,
-    });
+      const date = new Date();
+
+      return this.tokenRepository.save({
+        token,
+        ammount: dto.ammount,
+        meterNumber: dto.meter,
+        createdAt: date,
+        active: true,
+      });
+    } catch (e) {
+      return Promise.resolve(new ResError(500, e.message));
+    }
   }
 
   async getDays(token: string) {
     const _token = await this.tokenRepository.findOne({ token });
-    if (!_token) throw new Error('Token not found');
+    if (!_token) return new ResError(404, 'Token not found');
     return tokenDaysHelper(_token);
   }
 
   async loadToken(token: string) {
     const _token = await this.tokenRepository.findOne({ token });
-    console.log(_token);
-    return _token;
+    if (!_token) return new ResError(404, 'Token not found');
+    _token.active = false;
+    return this.tokenRepository.save(_token);
   }
 }

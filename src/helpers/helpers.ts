@@ -1,4 +1,5 @@
 import { Token } from 'src/models/token.entity';
+import { IDays } from 'src/types';
 
 export function generate8DigitToken(ammout: number): string {
   if (ammout % 100 !== 0) throw new Error('Ammount must be a multiple of 100');
@@ -29,7 +30,7 @@ export function isTokenValid(token: string): boolean {
   return token.length === 8 && getDaysFromToken(token) > 0;
 }
 
-export function tokenDaysHelper(token: Token) {
+export function tokenDaysHelper(token: Token): IDays {
   if (!token) throw new Error('No token object found');
   if (!isTokenValid(token.token)) throw new Error('Token is not valid');
 

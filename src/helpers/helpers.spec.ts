@@ -1,8 +1,10 @@
+import { Token } from 'src/models/token.entity';
 import {
   calculateDaysPerAmmount,
   generate8DigitToken,
   getDaysFromToken,
   isTokenValid,
+  tokenDaysHelper,
 } from './helpers';
 
 describe('helpers test', () => {
@@ -34,5 +36,20 @@ describe('helpers test', () => {
   it('Token should be valid', () => {
     expect(isTokenValid(generate8DigitToken(100))).toBe(true);
     expect(isTokenValid('AMATA')).toBe(false);
+  });
+
+  it('Token should return valid days', () => {
+    const token: Token = {
+      id: 67,
+      meterNumber: '123456789',
+      token: '10703081',
+      ammount: 100,
+      active: true,
+      createdAt: new Date('2022-02-17T15:50:37.118Z'),
+    };
+    const days = tokenDaysHelper(token);
+
+    expect(days).not.toBeNull();
+    expect(days.totalDays).toBe(1);
   });
 });

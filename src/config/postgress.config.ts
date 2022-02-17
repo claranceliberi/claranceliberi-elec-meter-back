@@ -13,6 +13,7 @@ export const pgConfig: TypeOrmModuleOptions = {
   synchronize: true,
   migrations: ['dist/src/db/migrations.js'],
   cli: { migrationsDir: 'src/db/migrations' },
+  keepConnectionAlive: true,
 };
 
 // POSTGRES_HOST=postgres
