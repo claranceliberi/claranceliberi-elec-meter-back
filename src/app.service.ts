@@ -33,8 +33,6 @@ export class AppService {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + getDaysFromToken(token));
 
-      console.log(expiryDate);
-
       return this.tokenRepository.save({
         token,
         ammount: dto.ammount,
@@ -57,6 +55,7 @@ export class AppService {
   async loadToken(token: string) {
     const _token = await this.tokenRepository.findOne({ token });
     if (!_token) return new ResError(404, 'Token not found');
+    if (!_token.active) return new ResError(406, 'Token already loaded');
     _token.active = false;
     return this.tokenRepository.save(_token);
   }

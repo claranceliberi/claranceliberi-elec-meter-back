@@ -46,8 +46,10 @@ export class AppController {
   ) {
     try {
       const result = await this.appService.loadToken(token);
-      if (result instanceof ResError && result.status === 404)
-        res.status(HttpStatus.NOT_FOUND);
+      if (result instanceof ResError) {
+        if (result.status === 404) res.status(HttpStatus.NOT_FOUND);
+        else if (result.status === 406) res.status(HttpStatus.NOT_ACCEPTABLE);
+      }
       return result;
     } catch (e) {
       return e.message();
