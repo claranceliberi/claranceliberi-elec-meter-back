@@ -47,6 +47,12 @@ describe('AppController', () => {
       expect(tokenDaysHelper(result).remainingDays).toBeGreaterThan(0);
     });
 
+    it('Get all tokens', async () => {
+      const result = (await appController.getAll()) as Token[];
+      expect(result).not.toBeNull();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
     it('should fail to buy Token', async () => {
       const buyToken: BuyElecDto = {
         ammount: 109,
