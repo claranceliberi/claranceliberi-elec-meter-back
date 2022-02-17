@@ -1,11 +1,11 @@
 FROM node:17
 
-WORKDIR /app
+WORKDIR /elec-meter
 
-COPY package.json /app/package.json
+COPY package.json /elec-meter/package.json
 
 RUN yarn install
 
-COPY . /app
+COPY . /elec-meter
 
 CMD [ "yarn","start:debug"]
