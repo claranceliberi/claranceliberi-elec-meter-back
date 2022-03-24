@@ -87,7 +87,7 @@ describe('AppController', () => {
       )) as ResError;
       expect(result).not.toBeNull();
       expect(result.status).toBe(404);
-      expect(result.message).toBe('Token not found');
+      expect(result.message).toBe('Unknown token');
     });
   });
 });

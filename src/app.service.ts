@@ -48,14 +48,14 @@ export class AppService {
 
   async getDays(token: string) {
     const _token = await this.tokenRepository.findOne({ token });
-    if (!_token) return new ResError(404, 'Token not found');
+    if (!_token) return new ResError(404, 'Unknown token');
     return tokenDaysHelper(_token);
   }
 
   async loadToken(token: string) {
     const _token = await this.tokenRepository.findOne({ token });
-    if (!_token) return new ResError(404, 'Token not found');
-    if (!_token.active) return new ResError(406, 'Token already loaded');
+    if (!_token) return new ResError(404, 'Unknown token');
+    if (!_token.active) return new ResError(406, 'Token is used already');
     _token.active = false;
     return this.tokenRepository.save(_token);
   }
